@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nephrology Review Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f6f8;
+    }
+    .search-box {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 500px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 16px;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-box">
+    <h2>Nephrology Review Search</h2>
+    <p>Search PubMed reviews (last 5 years)</p>
+    <input type="text" id="query" placeholder="Enter your nephrology topic...">
+    <br>
+    <button onclick="searchPubMed()">Search</button>
+  </div>
+
+  <script>
+    function searchPubMed() {
+      const userQuery = document.getElementById("query").value;
+
+      const baseQuery = `(
+        ("Nat Rev Nephrol"[Journal] OR "Kidney Int"[Journal] OR "J Am Soc Nephrol"[Journal] OR 
+        "Am J Kidney Dis"[Journal] OR "Clin J Am Soc Nephrol"[Journal] OR "Nephrol Dial Transplant"[Journal] OR 
+        "Kidney Int Rep"[Journal] OR "Am J Nephrol"[Journal] OR "Clin Kidney J"[Journal] OR "Perit Dial Int"[Journal] OR 
+        "Curr Opin Nephrol Hypertens"[Journal] OR "Kidney Med"[Journal] OR "Semin Nephrol"[Journal] OR 
+        "Kidney360"[Journal] OR "Adv Chronic Kidney Dis"[Journal])
+        AND review[Publication Type]
+      )
+      OR
+      (
+        ("N Engl J Med"[Journal] OR "Lancet"[Journal] OR "JAMA"[Journal] OR "BMJ"[Journal] OR "Ann Intern Med"[Journal])
+        AND review[Publication Type]
+        AND (Nephrology[MeSH Terms] OR Renal Diseases[MeSH Terms] OR Kidney Diseases[MeSH Terms] OR kidney[Title/Abstract] OR renal[Title/Abstract])
+      )
+      AND ("last 5 years"[DP])`;
+
+      // Add user query to the search
+      const fullQuery = `${baseQuery} AND (${userQuery})`;
+
+      // Open PubMed
+      const url = "https://pubmed.ncbi.nlm.nih.gov/?term=" + encodeURIComponent(fullQuery);
+      window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>
